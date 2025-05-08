@@ -1,0 +1,632 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* ========== Global Styles ========== */
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #e74c3c;
+        --accent-color: #3498db;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+        --text-color: #333;
+        --text-light: #6c757d;
+        --white: #ffffff;
+        --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: var(--text-color);
+        padding-top: 80px;
+        line-height: 1.6;
+    }
+
+    /* ========== Enhanced Header ========== */
+    .main-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1030;
+        transition: var(--transition);
+        background: rgba(44, 62, 80, 0.97);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        box-shadow: 0 2px 30px rgba(0, 0, 0, 0.1);
+        padding: 12px 0;
+    }
+
+    .header-scrolled {
+        padding: 8px 0;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Logo specific styling */
+    .logo-img {
+        height: 40px;
+        width: auto;
+        transition: var(--transition);
+    }
+
+    .brand-text {
+        display: inline-block;
+        line-height: 1.1;
+    }
+
+    .brand-name {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        font-size: 1.3rem;
+        display: block;
+    }
+
+    .tagline {
+        font-size: 0.6rem;
+        font-weight: 400;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.85);
+        text-transform: uppercase;
+        display: block;
+    }
+
+    /* Make logo slightly larger on hover */
+    .navbar-brand:hover .logo-img {
+        transform: scale(1.05);
+    }
+
+    .navbar-nav .nav-item {
+        margin: 0 4px;
+    }
+
+    .navbar-nav .nav-link {
+        color: var(--white) !important;
+        font-weight: 500;
+        padding: 8px 16px !important;
+        position: relative;
+        transition: var(--transition);
+        border-radius: 4px;
+        font-size: 0.95rem;
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: var(--secondary-color) !important;
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .navbar-nav .nav-item.active .nav-link {
+        color: var(--secondary-color) !important;
+        font-weight: 600;
+    }
+
+    .header-cta {
+        display: flex;
+        align-items: center;
+        margin-left: 20px;
+    }
+
+    .phone-link {
+        display: flex;
+        align-items: center;
+        color: var(--white);
+        text-decoration: none;
+        transition: var(--transition);
+        margin-right: 15px;
+    }
+
+    .phone-link:hover {
+        color: var(--secondary-color);
+        transform: translateY(-1px);
+    }
+
+    .phone-link i {
+        margin-right: 8px;
+        font-size: 1.1rem;
+    }
+
+    /* ========== Contact Hero Section ========== */
+    .contact-hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                    url('{% static "images/bg.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        height: 60vh;
+        min-height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        color: var(--white);
+        text-align: center;
+        margin-bottom: 5rem;
+    }
+
+    .contact-hero-content {
+        position: relative;
+        z-index: 2;
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .contact-hero h1 {
+        font-size: 3.8rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .contact-hero .lead {
+        font-size: 1.5rem;
+        margin-bottom: 2.5rem;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* ========== Contact Form Section ========== */
+    .contact-section {
+        padding: 5rem 0;
+    }
+
+    .contact-card {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        height: 100%;
+        padding: 2rem;
+    }
+
+    .contact-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+
+    .info-card {
+        background-color: var(--primary-color);
+        color: var(--white);
+    }
+
+    .info-card h5 {
+        color: var(--white);
+    }
+
+    .info-item {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .info-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .info-icon {
+        font-size: 1.5rem;
+        color: var(--secondary-color);
+        margin-right: 1rem;
+    }
+
+    /* Form styles */
+    .form-control {
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        transition: var(--transition);
+    }
+
+    .form-control:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+    }
+
+    textarea.form-control {
+        min-height: 150px;
+    }
+
+    /* ========== Section Styling ========== */
+    .section-title {
+        position: relative;
+        margin-bottom: 3.5rem;
+        text-align: center;
+        font-weight: 700;
+        color: var(--dark-color);
+    }
+
+    .section-title:after {
+        content: '';
+        position: absolute;
+        width: 80px;
+        height: 4px;
+        background: var(--secondary-color);
+        bottom: -18px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* ========== Button Styles ========== */
+    .btn {
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: var(--transition);
+        border: none;
+        position: relative;
+        overflow: hidden;
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        background-color: var(--secondary-color);
+        color: var(--white);
+        box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
+    }
+
+    .btn-primary:hover {
+        background-color: #c0392b;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.6);
+    }
+
+    /* ========== Footer Styles ========== */
+    .main-footer {
+        background-color: var(--primary-color);
+        color: var(--white);
+        padding: 4rem 0 2rem;
+    }
+
+    .footer-logo {
+        height: 50px;
+        margin-bottom: 1.5rem;
+    }
+
+    .footer-links h5 {
+        color: var(--white);
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    .footer-links h5:after {
+        content: '';
+        position: absolute;
+        width: 40px;
+        height: 2px;
+        background: var(--secondary-color);
+        bottom: 0;
+        left: 0;
+    }
+
+    .footer-links ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .footer-links li {
+        margin-bottom: 0.8rem;
+    }
+
+    .footer-links a {
+        color: rgba(255,255,255,0.7);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+        color: var(--secondary-color);
+        padding-left: 5px;
+    }
+
+    .social-links a {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background: rgba(255,255,255,0.1);
+        color: var(--white);
+        border-radius: 50%;
+        text-align: center;
+        line-height: 40px;
+        margin-right: 10px;
+        transition: var(--transition);
+    }
+
+    .social-links a:hover {
+        background: var(--secondary-color);
+        transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 2rem;
+        margin-top: 3rem;
+        text-align: center;
+    }
+
+    /* ========== Animations ========== */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ========== Responsive Adjustments ========== */
+    @media (max-width: 1199.98px) {
+        .contact-hero h1 {
+            font-size: 3.2rem;
+        }
+    }
+
+    @media (max-width: 991.98px) {
+        body {
+            padding-top: 70px;
+        }
+        
+        .contact-hero h1 {
+            font-size: 2.8rem;
+        }
+        
+        .navbar-collapse {
+            background: rgba(44, 62, 80, 0.98);
+            padding: 20px;
+            margin-top: 15px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .contact-hero {
+            height: auto;
+            min-height: 400px;
+            background-attachment: scroll;
+            padding: 6rem 0;
+        }
+        
+        .contact-hero h1 {
+            font-size: 2.4rem;
+        }
+        
+        .contact-hero .lead {
+            font-size: 1.1rem;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            margin-bottom: 2rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .contact-hero h1 {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<!-- Enhanced Header -->
+<header class="main-header">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'images/logo.jpg' %}" 
+                alt="Jayveer Trader's Logo" 
+                class="d-inline-block align-top logo-img me-2"
+                height="40">
+                <div class="brand-text">
+                    <span class="brand-name">Jayveer Trader's</span>
+                    <span class="tagline">Premium Tiles & Stones</span>
+                </div>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item {% if request.path == '/' %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item {% if request.path == '/about/' %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item {% if request.path == '/products/' %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'products' %}">Products</a>
+                    </li>
+                    <li class="nav-item {% if request.path == '/contact/' %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                    </li>
+                    <li class="nav-item {% if request.path == '/location/' %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'location' %}">Location</a>
+                    </li>
+                </ul>
+                
+                <div class="header-cta">
+                    <a href="tel:+919876543210" class="phone-link d-none d-lg-flex">
+                        <i class="fas fa-phone-alt"></i> +91 9499842495
+                    </a>
+                    <a href="{% url 'contact' %}" class="btn btn-primary ms-lg-3">
+                        <i class="fas fa-envelope me-2"></i> Get Quote
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- Contact Hero Section -->
+<section class="contact-hero">
+    <div class="container contact-hero-content">
+        <h1>Get In Touch</h1>
+        <p class="lead">We're here to help with all your tile and stone needs. Contact us today for expert advice and quotes.</p>
+    </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="contact-section">
+    <div class="container">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="row">
+            <div class="col-lg-7 mb-5 mb-lg-0">
+                <div class="contact-card">
+                    <!-- Django Messages System -->
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="name" class="form-label">Your Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+                      
+                        <div class="mb-4">
+                            <label for="city" class="form-label">City</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" required>
+                        </div>
+                      
+                        <div class="mb-4">
+                            <label for="message" class="form-label">Your Message</label>
+                            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="contact-card info-card h-100">
+                    <h5 class="mb-4">Showroom Information</h5>
+                    
+                    <div class="info-item d-flex">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h6>Address</h6>
+                            <p>Infront of Water Wille Near Bright Auto Glass<br>R.T.O Bypass Road<br>Himmatnagar, Gujarat - 383001</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item d-flex">
+                        <div class="info-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <h6>Phone</h6>
+                            <p>+91 9499842495<br>+91 9876543210</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item d-flex">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h6>Email</h6>
+                            <p>jayveertraders2024@gmail.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item d-flex">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <h6>Showroom Hours</h6>
+                            <p>Monday - Saturday: 10:00 AM - 8:00 PM<br>Sunday: 11:00 AM - 6:00 PM</p>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links mt-4">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('.main-header');
+        if (window.scrollY > 30) {
+            header.classList.add('header-scrolled');
+        } else {
+            header.classList.remove('header-scrolled');
+        }
+    });
+
+    // Mobile menu close on click
+    document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            const bsCollapse = new bootstrap.Collapse(document.getElementById('mainNavbar'), {
+                toggle: false
+            });
+            bsCollapse.hide();
+        });
+    });
+
+    // Animation for contact form
+    document.addEventListener('DOMContentLoaded', function() {
+        const animateElements = () => {
+            const elements = document.querySelectorAll('.contact-card, .section-title');
+            const windowHeight = window.innerHeight;
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementPosition < windowHeight - elementVisible) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+        
+        // Set initial state
+        document.querySelectorAll('.contact-card, .section-title').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(30px)';
+            element.style.transition = 'all 0.6s ease';
+        });
+        
+        // Run on load and scroll
+        animateElements();
+        window.addEventListener('scroll', animateElements);
+    });
+</script>
+{% endblock %}
