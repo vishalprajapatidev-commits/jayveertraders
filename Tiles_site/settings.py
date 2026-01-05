@@ -26,7 +26,8 @@ SECRET_KEY = 'sb8)v!g5l91bgtrr2nvbgp)9mng5gk&fq@^k+c_n8z61%o1(=q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ ]
+
 
 
 # Application definition
@@ -77,12 +78,8 @@ WSGI_APPLICATION = 'Tiles_site.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'Tiles_sites',  # Your database name
-        'CLIENT': {
-            'host': 'localhost',
-            'port': 27017,
-        }        
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

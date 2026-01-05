@@ -680,7 +680,7 @@
         <div class="loader-text">
             <div class="loader-brand">WELCOME</div>
             <div class="loader-brand">JAYVEER TRADER'S</div>
-            <div class="loader-tagline">Granite & Marble</div>
+            <div class="loader-tagline"> Premium Tiles ,Granite & Marble</div>
         </div>
     </div>
 </div>
@@ -690,13 +690,14 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'home' %}">
-                <img src="{% static 'images/logo.jpg' %}" 
+                <img src="{% static 'images/jtlogo.png' %}" 
                 alt="Jayveer Trader's Logo" 
                 class="d-inline-block align-top logo-img me-2"
                 height="40">
                 <div class="brand-text">
                     <span class="brand-name">Jayveer Trader's</span>
-                    <span class="tagline">Premium Tiles & Stones</span>
+                    <span class="tagline">Premium Tiles,Granite & Marble</span>
+                    {% comment %} <span class="tagline">plumbing & sanitary items...</span> {% endcomment %}
                 </div>
             </a>
             
@@ -739,7 +740,7 @@
 <!-- Hero Section -->
 <section class="about-hero">
     <div class="container hero-content">
-        <h1 class="display-3 fw-bold">Premium Tiles & Stones</h1>
+        <h1 class="display-3 fw-bold">Premium Tiles & Granite</h1>
         <p class="lead">Discover the finest collection of tiles, granite and marble for your dream spaces</p>
         <div class="d-flex justify-content-center gap-3">
             <a href="{% url 'products' %}" class="btn btn-primary btn-lg">Explore Collection</a>
